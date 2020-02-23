@@ -23,11 +23,14 @@ To train a new model from scratch, the basic syntax is:
 If you find this code useful in your research, please consider citing:
 
 ```
-@article{lee2019enabling,
-  title={Enabling Spike-based Backpropagation in State-of-the-art Deep Neural Network Architectures},
+@article{lee2020enabling,
+  title={Enabling Spike-based Backpropagation for Training Deep Neural Network Architectures},
   author={Lee, Chankyu and Sarwar, Syed Shakib and Panda, Priyadarshini and Srinivasan, Gopalakrishnan and Roy, Kaushik},
-  journal={arXiv preprint arXiv:1903.06379},
-  year={2019}
+  journal={Frontiers in Neuroscience},
+  volume={14},
+  pages={119},
+  year={2020},
+  publisher={Frontiers}
 }
 ```
 
