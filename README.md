@@ -1,6 +1,6 @@
 # Enabling Spike-based Backpropagation for Training Deep Neural Network Architectures
 
-This repo contains the code associated with [Enabling Spike-based Backpropagation for Training Deep Neural Network Architectures]. This code has most recently been tested with Python 2.7.15 and Pytorch 0.3.1.
+This repo contains the code associated with [Enabling Spike-based Backpropagation for Training Deep Neural Network Architectures](https://www.frontiersin.org/articles/10.3389/fnins.2020.00119/abstract). This code has most recently been tested with Python 2.7.15 and Pytorch 0.3.1.
 
 
 
