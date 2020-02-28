@@ -24,13 +24,15 @@ If you find this code useful in your research, please consider citing:
 
 ```
 @article{lee2020enabling,
+  doi={10.3389/fnins.2020.00119}
   title={Enabling Spike-based Backpropagation for Training Deep Neural Network Architectures},
   author={Lee, Chankyu and Sarwar, Syed Shakib and Panda, Priyadarshini and Srinivasan, Gopalakrishnan and Roy, Kaushik},
   journal={Frontiers in Neuroscience},
   volume={14},
   pages={119},
   year={2020},
-  publisher={Frontiers}
+  url={https://www.frontiersin.org/article/10.3389/fnins.2020.00119},
+  publisher={Frontiers in Neuroscience}
 }
 ```
 
