@@ -3,23 +3,16 @@ import os
 import shutil
 import time
 import math
-import scipy.io
-import numpy
-import six
 import torch
 import torch.nn as nn
 import torch.nn.parallel
-import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
 from torch.autograd import Variable
 import torch.optim
 import torch.utils.data
-import torchvision
 import torchvision.transforms as transforms
-import torchvision.datasets as datasets
 import torchvision.models as models
 import torchvision.datasets as dsets
-import random
 
 import torch._utils
 try:
@@ -162,10 +155,10 @@ def main():
 
 
 def grad_cal(l, LF_output, Total_output):
-    Total_output = Total_output + (Total_output == 0).type(torch.cuda.FloatTensor)
-    NG = LF_output.gt(0).type(torch.cuda.FloatTensor) + math.log(l) * torch.div(LF_output, Total_output)
+    Total_output = Total_output + (Total_output < 1e-3).type(torch.cuda.FloatTensor)
+    out = LF_output.gt(1e-3).type(torch.cuda.FloatTensor) + math.log(l) * torch.div(LF_output, Total_output)
+    return out
 
-    return NG
 
 def train(train_loader, model, criterion, criterion_en, optimizer, epoch, time_steps, leak):
     batch_time = AverageMeter()
@@ -229,9 +222,9 @@ def train(train_loader, model, criterion, criterion_en, optimizer, epoch, time_s
         loss.backward(retain_variables=False)
         optimizer.step()
 
-        out1_temp = None
-        out2_temp = None
-        outf0_temp = None
+        out1_temp, NG_C1 = None, None
+        out2_temp, NG_C2 = None, None
+        outf0_temp, NG_F0 = None, None
 
         # measure elapsed time
         batch_time.update(time.time() - end)

@@ -3,22 +3,16 @@ import os
 import shutil
 import time
 import math
-import scipy.io
-import numpy
-import six
 import torch
 import torch.nn as nn
 import torch.nn.parallel
-import torch.nn.functional as F
 import torch.backends.cudnn as cudnn
 from torch.autograd import Variable
 import torch.optim
 import torch.utils.data
 import torchvision
 import torchvision.transforms as transforms
-import torchvision.datasets as datasets
 import torchvision.models as models
-import random
 
 model_names = sorted(name for name in models.__dict__
                      if name.islower() and not name.startswith("__")
@@ -176,10 +170,9 @@ def main():
 
 
 def grad_cal(l, LF_output, Total_output):
-    Total_output = Total_output + (Total_output == 0).type(torch.cuda.FloatTensor)
-    NG = LF_output.gt(0).type(torch.cuda.FloatTensor) + math.log(l) * torch.div(LF_output, Total_output)
-
-    return NG
+    Total_output = Total_output + (Total_output < 1e-3).type(torch.cuda.FloatTensor)
+    out = LF_output.gt(1e-3).type(torch.cuda.FloatTensor) + math.log(l) * torch.div(LF_output, Total_output)
+    return out
 
 
 def train(train_loader, model, criterion, criterion_en, optimizer, epoch, time_steps, leak):
@@ -262,16 +255,16 @@ def train(train_loader, model, criterion, criterion_en, optimizer, epoch, time_s
         batch_time.update(time.time() - end)
         end = time.time()
 
-        out11_temp = None
-        out21_temp = None
-        out22_temp = None
-        out31_temp = None
-        out32_temp = None
-        out41_temp = None
-        out42_temp = None
-        out51_temp = None
-        out52_temp = None
-        outf0_temp = None
+        out11_temp, NG_C11 = None, None
+        out21_temp, NG_C21 = None, None
+        out22_temp, NG_C22 = None, None
+        out31_temp, NG_C31 = None, None
+        out32_temp, NG_C32 = None, None
+        out41_temp, NG_C41 = None, None
+        out42_temp, NG_C42 = None, None
+        out51_temp, NG_C51 = None, None
+        out52_temp, NG_C52 = None, None
+        outf0_temp, NG_F0 = None, None
 
     print('Epoch: [{0}] Prec@1 {top1_tr.avg:.3f} Prec@5 {top5_tr.avg:.3f} Entropy_Loss {loss_en.avg:.4f}'
           .format(epoch, top1_tr=top1_tr, top5_tr=top5_tr, loss_en=losses_en))
